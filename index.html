@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>약물 기전 및 표적 치료 시뮬레이션 허브</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{--bg:#0b1220;--panel:#111a2e;--line:#22304d;--txt:#e6ecf5;--sub:#93a3bd;--teal:#2dd4bf;--amber:#fbbf24;--red:#f43f5e;--blue:#60a5fa;--violet:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;background:#05080f;font-family:Pretendard,'Apple SD Gothic Neo',sans-serif;color:var(--txt);display:flex;align-items:center;justify-content:center}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(1200px 700px at 50% 10%,#13213d 0%,var(--bg) 80%);z-index:-1}
+
+.hub-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 64px;
+    animation: fadeDown 0.8s ease;
+}
+.eyebrow {
+    font-size: 20px;
+    letter-spacing: .2em;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.lead {
+    font-size: 22px;
+    color: var(--sub);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    width: 100%;
+    animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.card {
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 40px;
+    text-decoration: none;
+    color: var(--txt);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* 개별 카드 포인트 컬러 및 호버 효과 */
+.card-patisiran:hover { border-color: var(--violet); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.15); }
+.card-spinraza:hover { border-color: var(--amber); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(251,191,36,0.15); }
+.card-asparaginase:hover { border-color: var(--teal); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(45,212,191,0.15); }
+.card-inhibitor:hover { border-color: var(--red); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(244,63,94,0.15); }
+
+.card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+    margin-bottom: 24px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+}
+.card-patisiran .card-icon { color: var(--violet); background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.3); }
+.card-spinraza .card-icon { color: var(--amber); background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.3); }
+.card-asparaginase .card-icon { color: var(--teal); background: rgba(45,212,191,.1); border-color: rgba(45,212,191,.3); }
+.card-inhibitor .card-icon { color: var(--red); background: rgba(244,63,94,.1); border-color: rgba(244,63,94,.3); }
+
+h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+.card-patisiran:hover h2 { color: var(--violet); }
+.card-spinraza:hover h2 { color: var(--amber); }
+.card-asparaginase:hover h2 { color: var(--teal); }
+.card-inhibitor:hover h2 { color: var(--red); }
+
+p {
+    font-size: 18px;
+    color: var(--sub);
+    line-height: 1.6;
+}
+
+.arrow {
+    position: absolute;
+    right: 32px;
+    bottom: 40px;
+    font-size: 24px;
+    color: var(--line);
+    transition: all 0.3s;
+}
+.card:hover .arrow {
+    transform: translateX(6px);
+    color: var(--txt);
+}
+
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+@media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="hub-container">
+    <header>
+        <div class="eyebrow">BIOME CLUB PROJECT</div>
+        <h1>약물 작용 기전 및 <em>효소 동역학 시뮬레이션</em></h1>
+        <div class="lead">해당 약물 카드를 클릭하면 프레젠테이션 페이지로 이동합니다.</div>
+    </header>
+
+    <div class="grid">
+        
+        <!-- 1. 파티시란 -->
+        <a href="https://hxxwx15-sudo.github.io/content-downloads-all_downloads-59/?utm_source=chatgpt.com" target="_blank" class="card card-patisiran">
+            <div class="card-icon">🧬</div>
+            <h2>파티시란 (Patisiran)</h2>
+            <p>질병 유발 단백질의 생성을 차단하는 RNAi(RNA 간섭) 기반 표적 치료 기전 및 생화학적 원리</p>
+            <div class="arrow">➔</div>
+        </a>
+
+        <!-- 2. 스핀라자 -->
+        <a href="#" target="_blank" class="card card-spinraza">
+            <div class="card-icon">🔗</div>
+            <h2>스핀라자 (Nusinersen)</h2>
+            <p>안티센스 올리고뉴클레오타이드(ASO)를 이용한 RNA 스플라이싱 조절 및 운동신경세포 보호 기전</p>
+            <div class="arrow">➔</div>
+        </a>
+
+        <!-- 3. 아스파라기나아제 (우리가 만든 파일 링크 연결) -->
+        <a href="https://khh090630-lang.github.io/biomreport/" target="_blank" class="card card-asparaginase">
+            <div class="card-icon">✂️</div>
+            <h2>아스파라기나아제 (L-asparaginase)</h2>
+            <p>종양 세포의 대사적 결함(ASNS 결핍)을 역이용하여 아미노산을 고갈시키는 표적 항암 기전</p>
+            <div class="arrow">➔</div>
+        </a>
+
+        <!-- 4. 효소저해제 -->
+        <a href="https://syr013.github.io/enzyme-inhibitors/" target="_blank" class="card card-inhibitor">
+            <div class="card-icon">🔒</div>
+            <h2>효소저해제 (Enzyme Inhibitors)</h2>
+            <p>타겟 단백질의 활성 부위 차단, 경쟁적/비경쟁적 저해 원리 및 효소 동역학(Kinetics) 분석</p>
+            <div class="arrow">➔</div>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
